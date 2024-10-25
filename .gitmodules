@@ -4,3 +4,6 @@
 [submodule "fossil-hr-gbapps"]
 	path = external/fossil-hr-gbapps
 	url = https://codeberg.org/Freeyourgadget/fossil-hr-gbapps
+[submodule "GadgetBridge"]
+	path = GadgetBridge
+	url = git@github.com:levithas/GadgetBridge.git

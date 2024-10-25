@@ -1,3 +1,11 @@
+# Disclaimer
+This is a Fork of the original Gadgetbridge from codeberg.org
+In this fork I implement an interface to communicate with my app.
+
+============
+# Original README
+============
+
 Gadgetbridge is now hosted on [codeberg.org](https://codeberg.org/Freeyourgadget/Gadgetbridge/).
 
 <a href="https://codeberg.org/Freeyourgadget/Gadgetbridge/">

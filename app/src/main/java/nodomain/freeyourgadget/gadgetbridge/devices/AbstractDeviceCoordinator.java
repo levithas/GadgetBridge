@@ -699,6 +699,12 @@ public abstract class AbstractDeviceCoordinator implements DeviceCoordinator {
     }
 
     @Override
+    public Set<AiXDroidFeature> getAiXDroidFeatures() { return Collections.emptySet(); }
+
+    @Override
+    public boolean supportsAiXDroid() { return false; }
+
+    @Override
     public int[] getSupportedDeviceSpecificConnectionSettings() {
         int[] settings = new int[0];
         ConnectionType connectionType = getConnectionType();

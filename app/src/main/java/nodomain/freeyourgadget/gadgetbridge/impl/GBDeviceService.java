@@ -59,6 +59,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class GBDeviceService implements DeviceService {
+
     protected final Context mContext;
     private final GBDevice mDevice;
     private final Class<? extends Service> mServiceClass;
@@ -554,6 +555,16 @@ public class GBDeviceService implements DeviceService {
     public void onSleepAsAndroidAction(String action, Bundle extras) {
         Intent intent = createIntent().setAction(ACTION_SLEEP_AS_ANDROID);
         intent.putExtra(EXTRA_SLEEP_AS_ANDROID_ACTION, action);
+        if (extras != null) {
+            intent.putExtras(extras);
+        }
+        invokeService(intent);
+    }
+
+    @Override
+    public void onAiXDroidAction(String action, Bundle extras ) {
+        Intent intent = createIntent().setAction(ACTION_AI_X_DROID);
+        intent.putExtra(EXTRA_AI_X_DROID_ACTION, action);
         if (extras != null) {
             intent.putExtras(extras);
         }

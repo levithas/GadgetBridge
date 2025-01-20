@@ -667,6 +667,14 @@ public interface DeviceCoordinator {
      */
     Set<SleepAsAndroidFeature> getSleepAsAndroidFeatures();
 
+    boolean supportsAiXDroid();
+
+    /**
+     * Returns the set of supported aiXDroid features
+     * @return Set
+     */
+    Set<AiXDroidFeature> getAiXDroidFeatures();
+
     /**
      * Returns device specific settings related to connection
      *

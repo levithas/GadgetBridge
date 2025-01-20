@@ -136,6 +136,15 @@
                 <action android:name="com.urbandroid.sleep.watch.CHECK_CONNECTED" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".externalevents.aixdroid.AiXDroidReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="de.levithas.aixdroid.RESPONSE"/>
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".activities.ControlCenterv2"
             android:label="@string/title_activity_controlcenter"
@@ -158,6 +167,10 @@
             android:name=".activities.DashboardPreferencesActivity"
             android:label="@string/dashboard_settings"
             android:parentActivityName=".activities.SettingsActivity" />
+        <activity
+            android:name=".activities.AiXDroidPreferencesActivity"
+            android:label="@string/aixdroid_settings"
+            android:parentActivityName=".activities.SettingsActivity"/>
         <activity
             android:name=".activities.SleepAsAndroidPreferencesActivity"
             android:label="@string/sleepasandroid_settings"

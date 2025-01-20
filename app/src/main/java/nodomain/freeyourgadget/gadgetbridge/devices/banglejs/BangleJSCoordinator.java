@@ -41,6 +41,7 @@ import nodomain.freeyourgadget.gadgetbridge.BuildConfig;
 import nodomain.freeyourgadget.gadgetbridge.R;
 import nodomain.freeyourgadget.gadgetbridge.activities.devicesettings.DeviceSpecificSettingsCustomizer;
 import nodomain.freeyourgadget.gadgetbridge.devices.AbstractBLEDeviceCoordinator;
+import nodomain.freeyourgadget.gadgetbridge.devices.AiXDroidFeature;
 import nodomain.freeyourgadget.gadgetbridge.devices.InstallHandler;
 import nodomain.freeyourgadget.gadgetbridge.devices.SampleProvider;
 import nodomain.freeyourgadget.gadgetbridge.devices.SleepAsAndroidFeature;
@@ -99,6 +100,14 @@ public class BangleJSCoordinator extends AbstractBLEDeviceCoordinator {
     @Override
     public Set<SleepAsAndroidFeature> getSleepAsAndroidFeatures() {
         return EnumSet.of(SleepAsAndroidFeature.ACCELEROMETER, SleepAsAndroidFeature.HEART_RATE, SleepAsAndroidFeature.NOTIFICATIONS, SleepAsAndroidFeature.ALARMS);
+    }
+
+    @Override
+    public boolean supportsAiXDroid() { return true; }
+
+    @Override
+    public Set<AiXDroidFeature> getAiXDroidFeatures() {
+        return EnumSet.of(AiXDroidFeature.ACCELEROMETER, AiXDroidFeature.HEART_RATE);
     }
 
     @Nullable

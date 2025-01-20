@@ -126,6 +126,7 @@ import nodomain.freeyourgadget.gadgetbridge.externalevents.gps.GBLocationProvide
 import nodomain.freeyourgadget.gadgetbridge.externalevents.gps.GBLocationService;
 import nodomain.freeyourgadget.gadgetbridge.externalevents.sleepasandroid.SleepAsAndroidAction;
 import nodomain.freeyourgadget.gadgetbridge.impl.GBDevice;
+import nodomain.freeyourgadget.gadgetbridge.impl.GBDeviceService;
 import nodomain.freeyourgadget.gadgetbridge.model.ActivitySample;
 import nodomain.freeyourgadget.gadgetbridge.model.Alarm;
 import nodomain.freeyourgadget.gadgetbridge.model.BatteryState;
@@ -140,6 +141,7 @@ import nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec;
 import nodomain.freeyourgadget.gadgetbridge.model.NotificationType;
 import nodomain.freeyourgadget.gadgetbridge.model.RecordedDataTypes;
 import nodomain.freeyourgadget.gadgetbridge.model.WeatherSpec;
+import nodomain.freeyourgadget.gadgetbridge.service.AiXDroidSender;
 import nodomain.freeyourgadget.gadgetbridge.service.SleepAsAndroidSender;
 import nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport;
 import nodomain.freeyourgadget.gadgetbridge.service.btle.BLETypeConversions;
@@ -194,6 +196,8 @@ public class BangleJSDeviceSupport extends AbstractBTLEDeviceSupport {
     private static final String BANGLE_ACTION_UART_TX = "com.banglejs.uart.tx";
 
     private SleepAsAndroidSender sleepAsAndroidSender;
+
+    private AiXDroidSender aiXDroidSender;
 
     public BangleJSDeviceSupport() {
         super(LOG);
@@ -328,10 +332,16 @@ public class BangleJSDeviceSupport extends AbstractBTLEDeviceSupport {
 
     @Override
     protected TransactionBuilder initializeDevice(TransactionBuilder builder) {
+
         LOG.info("Initializing");
 
         if (sleepAsAndroidSender == null) {
             sleepAsAndroidSender = new SleepAsAndroidSender(gbDevice);
+        }
+
+        if (aiXDroidSender == null) {
+
+            aiXDroidSender = new AiXDroidSender(gbDevice);
         }
 
         gbDevice.setState(GBDevice.State.INITIALIZING);
@@ -374,7 +384,7 @@ public class BangleJSDeviceSupport extends AbstractBTLEDeviceSupport {
 
         requestBangleGPSPowerStatus();
 
-        return builder;
+        return super.initializeDevice(builder);
     }
 
     /// Write a string of data, and chunk it up
@@ -582,6 +592,7 @@ public class BangleJSDeviceSupport extends AbstractBTLEDeviceSupport {
                 break;
             case "act":
                 handleActivity(json);
+                handleAiXDroidHeartRate(json);
                 break;
             case "actTrksList": {
                 JSONObject requestTrackObj = BangleJSActivityTrack.handleActTrksList(json, getDevice(), getContext());
@@ -614,6 +625,7 @@ public class BangleJSDeviceSupport extends AbstractBTLEDeviceSupport {
             } break;
             case "accel":
                 handleAcceleration(json);
+                handleAiXDroidAcceleration(json);
                 break;
             default : {
                 LOG.info("UART RX JSON packet type '"+packetType+"' not understood.");
@@ -676,6 +688,15 @@ public class BangleJSDeviceSupport extends AbstractBTLEDeviceSupport {
         }
     }
 
+    @Override
+    public void onAiXDroidAction(String action, Bundle extras) {
+        if(aiXDroidSender.isValidAction(action)) {
+
+
+
+        }
+    }
+
     private void enableAccelSender(boolean enable) {
         /**
          * Sends an event to the Banglejs to enable/disable Acceleration tracking
@@ -726,6 +747,20 @@ public class BangleJSDeviceSupport extends AbstractBTLEDeviceSupport {
                     (float) (accel.getDouble("y") * 9.80665), (float) (accel.getDouble("z") * 9.80665));
         }
     }
+
+
+    private void handleAiXDroidAcceleration(JSONObject json) throws JSONException {
+        JSONObject accel = json.getJSONObject("accel");
+        aiXDroidSender.onAccelChanged((float) (accel.getDouble("x") * 9.80665),
+                (float) (accel.getDouble("y") * 9.80665), (float) (accel.getDouble("z") * 9.80665));
+    }
+
+    private void handleAiXDroidHeartRate(JSONObject json) throws JSONException {
+        int hrt = json.optInt("hrm", 0);
+        long timeStamp = json.optLong("ts", System.currentTimeMillis() / 1000);
+        aiXDroidSender.onHeartRateChanged(hrt, timeStamp);
+    }
+
 
     /**
      * Handle "status" packets: battery info updates

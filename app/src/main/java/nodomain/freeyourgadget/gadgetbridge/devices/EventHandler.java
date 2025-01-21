@@ -152,6 +152,7 @@ public interface EventHandler {
     void onSetGpsLocation(Location location);
 
     void onSleepAsAndroidAction(String action, Bundle extras);
+    void onAiXDroidAction(String action, Bundle extras);
 
     void onCameraStatusChange(GBDeviceEventCameraRemote.Event event, String filename);
 }

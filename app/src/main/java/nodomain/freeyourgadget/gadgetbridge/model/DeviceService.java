@@ -83,6 +83,10 @@ public interface DeviceService extends EventHandler {
 
     String ACTION_SLEEP_AS_ANDROID = ".action.sleep_as_android";
     String EXTRA_SLEEP_AS_ANDROID_ACTION = "sleepasandroid_action";
+
+    String ACTION_AI_X_DROID = ".action.ai_x_droid";
+    String EXTRA_AI_X_DROID_ACTION = "aixdroid_action";
+
     String EXTRA_NOTIFICATION_BODY = "notification_body";
     String EXTRA_NOTIFICATION_FLAGS = "notification_flags";
     String EXTRA_NOTIFICATION_ID = "notification_id";

@@ -1232,5 +1232,10 @@ public abstract class AbstractDeviceSupport implements DeviceSupport {
     }
 
     @Override
+    public void onAiXDroidAction(String action, Bundle extras) {
+
+    }
+
+    @Override
     public void onCameraStatusChange(GBDeviceEventCameraRemote.Event event, String filename) {}
 }

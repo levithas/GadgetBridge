@@ -3380,4 +3380,11 @@
     <string name="inactivity_warnings_minimum_steps_summary">Minimum amount of steps that need to be taken during the threshold minutes</string>
     <string name="prefs_hrv_monitoring_title">HRV monitoring</string>
     <string name="prefs_hrv_monitoring_description">Automatically monitor heart rate variability throughout the day</string>
+    <string name="pref_aixdroid_enable_summary">Enable AiXDroid integration</string>
+    <string name="pref_aixdroid_device_summary">Select device as AiXDroid data provider</string>
+    <string name="pref_aixdroid_features_summary">Support differs from device to device</string>
+    <string name="pref_aixdroid_feat_movement">Accelerometer</string>
+    <string name="pref_aixdroid_feat_heartrate">Heart Rate</string>
+    <string name="aixdroid_settings">AiXDroid</string>
+    <string name="other_app_warning">This feature requires the installation of the open-source AiXDroid App!</string>
 </resources>

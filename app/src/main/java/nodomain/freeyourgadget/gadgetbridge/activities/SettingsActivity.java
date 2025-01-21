@@ -381,6 +381,15 @@ public class SettingsActivity extends AbstractSettingsActivityV2 {
                 });
             }
 
+            pref = findPreference("pref_category_aixdroid");
+            if (pref != null) {
+                pref.setOnPreferenceClickListener(preference -> {
+                    Intent enableIntent = new Intent(requireContext(), AiXDroidPreferencesActivity.class);
+                    startActivity(enableIntent);
+                    return true;
+                });
+            }
+
             pref = findPreference("pref_category_notifications");
             if (pref != null) {
                 pref.setOnPreferenceClickListener(preference -> {

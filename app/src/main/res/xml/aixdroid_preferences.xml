@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        android:icon="@drawable/ic_warning"
+        android:key="pref_other_app_warning"
+        android:summary="@string/other_app_warning" />
+
+    <PreferenceCategory
+        android:key="pref_key_sleepasandroid_general"
+        android:title="@string/pref_header_general"
+        app:iconSpaceReserved="false">
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="pref_key_aixdroid_enable"
+            android:layout="@layout/preference_checkbox"
+            android:summary="@string/pref_aixdroid_enable_summary"
+            android:title="@string/function_enabled"
+            app:iconSpaceReserved="false" />
+        <ListPreference
+            android:key="aixdroid_device"
+            android:entries="@array/empty_array"
+            android:entryValues="@array/empty_array"
+            android:title="@string/pref_sleepasandroid_device_title"
+            android:summary="@string/pref_aixdroid_device_summary"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_key_aixdroid_features"
+        android:title="@string/pref_sleepasandroid_features_title"
+        android:summary="@string/pref_aixdroid_features_summary"
+        app:iconSpaceReserved="false">
+        <SwitchPreferenceCompat
+            android:key="pref_key_aixdroid_feat_movement"
+            android:title="@string/pref_aixdroid_feat_movement"
+            app:iconSpaceReserved="false"
+            android:defaultValue="true"
+            android:enabled="false">
+        </SwitchPreferenceCompat>
+        <SwitchPreferenceCompat
+            android:key="pref_key_aixdroid_feat_hr"
+            android:title="@string/pref_aixdroid_feat_heartrate"
+            app:iconSpaceReserved="false"
+            android:defaultValue="true"
+            android:enabled="false">
+        </SwitchPreferenceCompat>
+    </PreferenceCategory>
+</PreferenceScreen>

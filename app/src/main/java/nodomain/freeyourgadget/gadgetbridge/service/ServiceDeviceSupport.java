@@ -518,6 +518,14 @@ public class ServiceDeviceSupport implements DeviceSupport {
     }
 
     @Override
+    public void onAiXDroidAction(String action, Bundle extras) {
+        if (checkBusy("aiXDroid")) {
+            return;
+        }
+        delegate.onAiXDroidAction(action, extras);
+    }
+
+    @Override
     public void onCameraStatusChange(GBDeviceEventCameraRemote.Event event, String filename) {
         if (checkBusy("camera status")) {
             return;

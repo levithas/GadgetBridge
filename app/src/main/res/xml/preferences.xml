@@ -331,6 +331,12 @@
             android:key="pref_category_sleepasandroid"
             android:title="@string/sleepasandroid_settings" />
 
+        <Preference
+            android:icon="@drawable/ic_engineering"
+            android:key="pref_category_aixdroid"
+            android:title="AiXDroid"
+            />
+
         <PreferenceScreen
             android:icon="@drawable/ic_wb_sunny"
             android:key="pref_screen_weather"

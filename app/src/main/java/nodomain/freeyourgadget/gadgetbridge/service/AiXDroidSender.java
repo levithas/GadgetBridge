@@ -50,6 +50,7 @@ public class AiXDroidSender {
             @Override
             public void run() {
                 syncData();
+                requestData();
             }
         }, 0, 5, TimeUnit.SECONDS);
     }
@@ -57,16 +58,25 @@ public class AiXDroidSender {
     private void syncData() {
         LOG.info("Synching Data with AiXDroid!");
 
-        Map<Long, Float> dataHr = new HashMap<>();
-        Map<Long, Float> dataAcc = new HashMap<>();
-        dataHr.put(System.currentTimeMillis(), heartRate);
-        dataAcc.put(System.currentTimeMillis(), maxMagnitudeAcceleration);
+        if(isFeatureEnabled(AiXDroidFeature.ACCELEROMETER)) {
+            Map<Long, Float> dataAcc = new HashMap<>();
+            dataAcc.put(System.currentTimeMillis(), maxMagnitudeAcceleration);
+            sendWriteDataIntent("Movement_BangleJS", dataAcc);
+            this.maxMagnitudeAcceleration = 0;
+        }
 
-        sendWriteDataIntent("HeartRate_BangleJS", dataHr);
-        sendWriteDataIntent("Movement_BangleJS", dataAcc);
+        if(isFeatureEnabled(AiXDroidFeature.HEART_RATE)) {
+            Map<Long, Float> dataHr = new HashMap<>();
+            dataHr.put(System.currentTimeMillis(), heartRate);
+            sendWriteDataIntent("HeartRate_BangleJS", dataHr);
+            this.heartRate = 0;
+        }
+    }
 
-        this.heartRate = 0;
-        this.maxMagnitudeAcceleration = 0;
+    private void requestData() {
+        LOG.info("Request Data from AiXDroid!");
+
+        sendReadDataIntent("BangleJS_Sleeplabels", System.currentTimeMillis(), 600);
     }
 
     private boolean isFeatureEnabled(AiXDroidFeature feature) {

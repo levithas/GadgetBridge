@@ -110,6 +110,7 @@ public class GBDaoGenerator {
         addLefunSleepSample(schema, user, device);
         addSonySWR12Sample(schema, user, device);
         addBangleJSActivitySample(schema, user, device);
+        addBangleJSSleepStageSample(schema, user, device);
         addCasioGBX100Sample(schema, user, device);
         addFitProActivitySample(schema, user, device);
         addPineTimeActivitySample(schema, user, device);
@@ -818,6 +819,13 @@ public class GBDaoGenerator {
 
     private static Entity addGarminSleepStageSample(Schema schema, Entity user, Entity device) {
         Entity sleepStageSample = addEntity(schema, "GarminSleepStageSample");
+        addCommonTimeSampleProperties("AbstractTimeSample", sleepStageSample, user, device);
+        sleepStageSample.addIntProperty("stage").notNull();
+        return sleepStageSample;
+    }
+
+    private static Entity addBangleJSSleepStageSample(Schema schema, Entity user, Entity device) {
+        Entity sleepStageSample = addEntity(schema, "BangleJSSleepStageSample");
         addCommonTimeSampleProperties("AbstractTimeSample", sleepStageSample, user, device);
         sleepStageSample.addIntProperty("stage").notNull();
         return sleepStageSample;

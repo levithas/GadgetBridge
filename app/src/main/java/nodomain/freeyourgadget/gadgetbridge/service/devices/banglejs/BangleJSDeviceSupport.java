@@ -100,6 +100,7 @@ import io.wax911.emojify.EmojiManager;
 import io.wax911.emojify.parser.EmojiParserKt;
 import nodomain.freeyourgadget.gadgetbridge.BuildConfig;
 import nodomain.freeyourgadget.gadgetbridge.GBApplication;
+import nodomain.freeyourgadget.gadgetbridge.GBException;
 import nodomain.freeyourgadget.gadgetbridge.R;
 import nodomain.freeyourgadget.gadgetbridge.activities.WakeActivity;
 import nodomain.freeyourgadget.gadgetbridge.activities.devicesettings.DeviceSettingsPreferenceConst;
@@ -117,7 +118,9 @@ import nodomain.freeyourgadget.gadgetbridge.deviceevents.GBDeviceEventUpdatePref
 import nodomain.freeyourgadget.gadgetbridge.deviceevents.GBDeviceEventVersionInfo;
 import nodomain.freeyourgadget.gadgetbridge.devices.banglejs.BangleJSConstants;
 import nodomain.freeyourgadget.gadgetbridge.devices.banglejs.BangleJSSampleProvider;
+import nodomain.freeyourgadget.gadgetbridge.devices.banglejs.BangleJSSleepStageSampleProvider;
 import nodomain.freeyourgadget.gadgetbridge.entities.BangleJSActivitySample;
+import nodomain.freeyourgadget.gadgetbridge.entities.BangleJSSleepStageSample;
 import nodomain.freeyourgadget.gadgetbridge.entities.CalendarSyncState;
 import nodomain.freeyourgadget.gadgetbridge.entities.CalendarSyncStateDao;
 import nodomain.freeyourgadget.gadgetbridge.entities.DaoSession;
@@ -690,9 +693,42 @@ public class BangleJSDeviceSupport extends AbstractBTLEDeviceSupport {
 
     @Override
     public void onAiXDroidAction(String action, Bundle extras) {
+        LOG.info("Receiving Intent!");
+
         if(aiXDroidSender.isValidAction(action)) {
+            String errorStr = extras.getString("error");
+            if(errorStr != null) {
+                LOG.warn("Error from AiXDroid: " + errorStr);
+            } else {
+                long[] timestampArray = extras.getLongArray("timeValues");
+                float[] dataArray = extras.getFloatArray("dataValues");
 
+                if(timestampArray == null || dataArray == null) {
+                    LOG.warn("Null timeValues or Null dataValues!!");
+                } else {
+                    try (DBHandler dbHandler = GBApplication.acquireDB()) {
+                        final BangleJSSleepStageSampleProvider sampleProvider = new BangleJSSleepStageSampleProvider(gbDevice, dbHandler.getDaoSession());
+                        final List<BangleJSSleepStageSample> sampleList = new ArrayList<>();
+                        for(int i = 0;i<timestampArray.length && i < dataArray.length;i++) {
+                            final BangleJSSleepStageSample sample = sampleProvider.createSample();
+                            int stage = Math.round(dataArray[i]);
 
+                            if (stage > 3) {
+                                LOG.warn("Sample with sleepStage larger than 3! (Ignored...)");
+                            } else {
+                                sample.setTimestamp(timestampArray[i]);
+                                sample.setStage(stage);
+                                sampleList.add(sample);
+                            }
+                        }
+
+                        sampleProvider.addSamples(sampleList);
+                        LOG.info("Receiving complete with " + sampleList.size() + " Datapoints!");
+                    } catch (Exception e) {
+                        LOG.warn("Exeption when receiving Data: " + e.getMessage());
+                    }
+                }
+            }
 
         }
     }
